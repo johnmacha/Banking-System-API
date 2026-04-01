@@ -13,7 +13,8 @@ public class Main {
         System.out.println("3. Deposit");
         System.out.println("4. Withdraw");
         System.out.println("5. Check Balance");
-        System.out.println("6. Exit");
+        System.out.println("6. View Transactions");
+        System.out.println("7. Exit");
      
     while (true) { 
         int choice = sc.nextInt(); // Waits for user to type a number
@@ -75,11 +76,20 @@ public class Main {
                 System.out.println("Account not found!");
             }
         }
-
         else if(choice == 6){
+            if(currentAccount != null){
+                currentAccount.showTransactions();
+                System.out.println("Thank you come again next time!");
+            }
+            else{
+                System.out.println("Please login first!");
+            }
+        }
+        else if(choice == 7){
             System.out.println("Good bye!");
             break;
         }
+
         }
         }
     }
