@@ -5,21 +5,33 @@ public class Main {
     public static void handleDeposit(Scanner sc, BankAccount currentAccount){
         if (currentAccount != null){
             System.out.println("Enter amount:");
-            double amount = sc.nextDouble();
-            currentAccount.deposit(amount);
-        }
-        else{
-            System.out.println("Please login first!");
-        }
+
+            try {
+                double amount = sc.nextDouble();
+                currentAccount.deposit(amount);
+            } catch (Exception e) {
+                System.out.println("Please enter a number!");
+            }
+            }
+       else{
+        System.out.println("Please login first!");
+        sc.nextLine(); //clear invalid input 
+        return; // stop return early
+       }
     }
     public static void handleWithdraw(Scanner sc, BankAccount currentAccount){
         if(currentAccount != null){
         System.out.println("Enter amount to withdraw");
-        double amount = sc.nextDouble();
-        currentAccount.withdraw(amount);
+        try {
+            double amount = sc.nextDouble();
+            currentAccount.withdraw(amount);
+        } catch (Exception e) {
+            System.out.println("Please enter a number!");
+            sc.nextLine(); // Clears invalid input
+            return; //Stops return early
+        }
         }
         else{
-            System.out.println("Please login first!");
         }
         }
         public static void handleTransactions(BankAccount curreAccount){
@@ -55,9 +67,16 @@ public class Main {
         System.out.println("7. Exit");
      
     while (true) { 
-        int choice = sc.nextInt(); // Waits for user to type a number
         System.out.println("\n==== BANK MENU ====");
-
+        int choice ; // Waits for user to type a number
+        try {
+            choice = sc.nextInt();
+        }
+        catch(Exception e){
+            System.out.println("Invalid input!");
+            sc.nextLine(); // Clear bad input
+            continue; // Restart the loop
+        }
         if (choice==1) {
             System.out.println("Enter account number: ");
             String accNo = sc.next();
