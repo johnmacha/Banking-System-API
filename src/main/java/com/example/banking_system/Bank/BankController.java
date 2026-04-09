@@ -1,5 +1,7 @@
 package com.example.banking_system.Bank;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,10 @@ public class BankController {
     public String deposit(@RequestParam String accNo, @RequestParam double amount){
         return bankService.deposit(accNo, amount);
     }
+    @PostMapping("withdraw")
+    public String withdraw(@RequestParam String accNo, @RequestParam double amount){
+        return bankService.withdraw(accNo, amount);
+    }
     @GetMapping("/balance")
     public String getBalance(@RequestParam String accNo){
         BankAccount acc = bankService.getAccount(accNo);
@@ -30,6 +36,13 @@ public class BankController {
         }
         return "Balance: "+acc.getBalance();
     }
-
-    
+    @GetMapping("/transaction")
+    public List<Transaction> transactions(@RequestParam String accNo){
+        BankAccount acc = bankService.getAccount(accNo);
+        if (acc == null){
+            return null;
+        }
+       return acc.getTransactions();
+         
+    }    
 }

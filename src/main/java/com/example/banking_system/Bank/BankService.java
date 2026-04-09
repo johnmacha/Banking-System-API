@@ -31,4 +31,19 @@ private BankRepository bankRepository;
 
         return "Deposit successful!";
     }
+    public String withdraw(String accNo, double amount){
+        BankAccount acc = bankRepository.findById(accNo).orElse(null);
+        if(acc == null){
+            return "Account not found";
+        }
+        if(amount <= 0 ){
+            return "Invalid amount!";
+        }
+        if(acc.getBalance() < amount){
+            return "Insufficient funds";
+        }
+        acc.withdraw(amount);
+        bankRepository.save(acc);
+        return "Withdrawal successful!";
+    }
 }
