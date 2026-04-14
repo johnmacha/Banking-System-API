@@ -46,4 +46,8 @@ public class BankController {
        return acc.getTransactions();
          
     }    
+    @GetMapping("/transactions")
+    public List<TransactionDTO> getTransactions(@RequestParam String accNo){
+        return bankService.getTransactions(accNo);
+    }
 }

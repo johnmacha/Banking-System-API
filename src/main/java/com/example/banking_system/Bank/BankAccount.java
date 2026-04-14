@@ -61,8 +61,9 @@ public class BankAccount {
     }
     // Getter for Transactions
     public List<Transaction> getTransactions(){
-        return transactions;
+      return transactions; // returns raw DB objects
     }
+
     // Unnecessary at this point
     // public void setBalance(double balance){
     //     this.balance = balance;

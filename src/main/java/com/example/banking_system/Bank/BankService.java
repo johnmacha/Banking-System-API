@@ -1,5 +1,7 @@
 package com.example.banking_system.Bank;
 // import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,5 +47,20 @@ private BankRepository bankRepository;
         acc.withdraw(amount);
         bankRepository.save(acc);
         return "Withdrawal successful!";
+    }
+    public List<TransactionDTO> getTransactions(String accNo){
+        BankAccount acc = bankRepository.findById(accNo).orElse(null);
+        if (acc == null){
+            return null;
+        }
+        return acc.getTransactions()
+        .stream()
+        .map(
+            t -> new TransactionDTO(
+                t.getType(),
+                t.getAmount(),
+                t.getTimestamp()
+            )
+        ).collect(Collectors.toList());
     }
 }
