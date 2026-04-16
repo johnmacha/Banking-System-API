@@ -1,9 +1,12 @@
 package com.example.banking_system.Bank;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,8 +49,22 @@ public class BankController {
        return acc.getTransactions();
          
     }    
-    @GetMapping("/transactions")
-    public List<TransactionDTO> getTransactions(@RequestParam String accNo){
-        return bankService.getTransactions(accNo);
-    }
+    @GetMapping("/{accNo}/transactions")
+    public ResponseEntity<?> getTransactions(
+        @PathVariable String accNo,
+        @RequestParam(required = false) String type,
+        @RequestParam(required = false) String start,
+        @RequestParam(required = false) String end
+        ){
+           LocalDateTime startDate = (start != null) ? LocalDateTime.parse(start) : null; //Ternary operator
+           LocalDateTime endDate = (end != null) ? LocalDateTime.parse(end) : null;
+            
+           List<TransactionDTO> transactions = 
+           bankService.getTransactions(accNo, type, startDate, endDate);// Object reference assignment from method call
+        
+            if(transactions == null){
+                return ResponseEntity.badRequest().body("Acount not found");
+            }
+            return ResponseEntity.ok(transactions);
+        }
 }

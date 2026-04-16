@@ -1,5 +1,6 @@
 package com.example.banking_system.Bank;
 // import java.util.HashMap;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,13 +49,21 @@ private BankRepository bankRepository;
         bankRepository.save(acc);
         return "Withdrawal successful!";
     }
-    public List<TransactionDTO> getTransactions(String accNo){
+    public List<TransactionDTO> getTransactions(
+        String accNo,
+        String type,
+        LocalDateTime start,
+        LocalDateTime end
+    ){
         BankAccount acc = bankRepository.findById(accNo).orElse(null);
         if (acc == null){
             return null;
         }
         return acc.getTransactions()
         .stream()
+        .filter(t -> type == null || t.getType().equalsIgnoreCase(type)) // e.i.c
+        .filter(t -> start == null || !t.getTimestamp().isBefore(start))// After or equal to start
+        .filter(t -> end == null || !t.getTimestamp().isAfter(end))// Before or equal to end
         .map(
             t -> new TransactionDTO(
                 t.getType(),
