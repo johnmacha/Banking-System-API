@@ -53,7 +53,9 @@ private BankRepository bankRepository;
         String accNo,
         String type,
         LocalDateTime start,
-        LocalDateTime end
+        LocalDateTime end,
+        int page,
+        int size
     ){
         BankAccount acc = bankRepository.findById(accNo).orElse(null);
         if (acc == null){
@@ -64,6 +66,12 @@ private BankRepository bankRepository;
         .filter(t -> type == null || t.getType().equalsIgnoreCase(type)) // e.i.c
         .filter(t -> start == null || !t.getTimestamp().isBefore(start))// After or equal to start
         .filter(t -> end == null || !t.getTimestamp().isAfter(end))// Before or equal to end
+        //SORT (latest first)
+        .sorted((t1,t2) -> t2.getTimestamp().compareTo(t1.getTimestamp()))
+        //PAGINATION
+        .skip((long)page*size)
+        .limit(size)
+
         .map(
             t -> new TransactionDTO(
                 t.getType(),

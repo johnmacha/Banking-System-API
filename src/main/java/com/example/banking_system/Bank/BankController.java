@@ -54,13 +54,15 @@ public class BankController {
         @PathVariable String accNo,
         @RequestParam(required = false) String type,
         @RequestParam(required = false) String start,
-        @RequestParam(required = false) String end
+        @RequestParam(required = false) String end,
+        @RequestParam(defaultValue="0") int page,
+        @RequestParam(defaultValue="5") int size
         ){
            LocalDateTime startDate = (start != null) ? LocalDateTime.parse(start) : null; //Ternary operator
            LocalDateTime endDate = (end != null) ? LocalDateTime.parse(end) : null;
             
            List<TransactionDTO> transactions = 
-           bankService.getTransactions(accNo, type, startDate, endDate);// Object reference assignment from method call
+           bankService.getTransactions(accNo, type, startDate, endDate, page, size);// Object reference assignment from method call
         
             if(transactions == null){
                 return ResponseEntity.badRequest().body("Acount not found");
