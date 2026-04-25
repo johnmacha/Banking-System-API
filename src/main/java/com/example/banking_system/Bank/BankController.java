@@ -64,11 +64,11 @@ public class BankController {
            List<TransactionDTO> transactions = 
            bankService.getTransactions(accNo, type, startDate, endDate, page, size);// Object reference assignment from method call
         
-            if(transactions == null){
-                return ResponseEntity.badRequest().body(
-                    new APIResponse<>("error","Acount not found", null)
-                );
-            }
+            // if(transactions == null){
+            //     return ResponseEntity.badRequest().body(
+            //         new APIResponse<>("error","Acount not found", null)
+            //     );
+            // } The exception is being handled globally
             return ResponseEntity.ok(
                 new APIResponse<>("success", "Transactions retrieved",transactions)
             );

@@ -23,10 +23,10 @@ private BankRepository bankRepository;
         BankAccount acc = bankRepository.findById(accNo).orElse(null);
 
         if(acc == null){
-            return "Account not found!";
+            throw new ResourceNotFoundException("Account not Found!");
         }
         if(amount <= 0 ){
-            return "Invalid amount!";
+            throw new ResourceNotFoundException("Invalid amount!");
         }
 
         acc.deposit(amount);
@@ -37,13 +37,13 @@ private BankRepository bankRepository;
     public String withdraw(String accNo, double amount){
         BankAccount acc = bankRepository.findById(accNo).orElse(null);
         if(acc == null){
-            return "Account not found";
+            throw new ResourceNotFoundException("Account not Found!");
         }
         if(amount <= 0 ){
-            return "Invalid amount!";
+            throw new ResourceNotFoundException("Invalid amount!");
         }
         if(acc.getBalance() < amount){
-            return "Insufficient funds";
+            throw new ResourceNotFoundException("Insufficient funds!");
         }
         acc.withdraw(amount);
         bankRepository.save(acc);
@@ -59,7 +59,7 @@ private BankRepository bankRepository;
     ){
         BankAccount acc = bankRepository.findById(accNo).orElse(null);
         if (acc == null){
-            return null;
+            throw new ResourceNotFoundException("Account not found!");
         }
         return acc.getTransactions()
         .stream()
