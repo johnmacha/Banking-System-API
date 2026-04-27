@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/bank")
 public class BankController {
@@ -20,9 +22,14 @@ public class BankController {
     private BankService bankService;
 
     @PostMapping("/create")
-    public String createAccount(@RequestBody BankAccount account){
-        bankService.createAccount(account.getAccNo(), account.getName());
-        return "Account created successfully!";
+    public ResponseEntity<APIResponse<String>> createAccount(
+        @Valid @RequestBody BankAccount acc
+    ){
+        bankService.createAccount(acc);
+        
+        return ResponseEntity.ok(
+            new APIResponse<>("success", "Account created", null)
+        );
     }
     @PostMapping("/deposit")
     public String deposit(@RequestParam String accNo, @RequestParam double amount){

@@ -7,11 +7,16 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 @Entity
 public class BankAccount {
     @Id
     private String accNo;
+    @NotBlank(message="Account name is required")
     private String name;
+
+    @Positive(message="Initial balance must be positive")
     private double balance;
 
     //Many transactions, one account 

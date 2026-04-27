@@ -12,8 +12,7 @@ public class BankService {
 @Autowired
 private BankRepository bankRepository;
 
-    public void createAccount(String accNo, String name){
-        BankAccount acc = new BankAccount(accNo, name);
+    public void createAccount(BankAccount acc){
         bankRepository.save(acc);
     }
     public BankAccount getAccount(String accNo){
