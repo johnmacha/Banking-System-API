@@ -1,45 +1,119 @@
-# Bank Account System (Java → Spring Boot)
+#  Banking System API
 
-A banking system project built as part of my journey in learning Java and backend development.  
-The project started as a simple console-based application and is being progressively upgraded into a full Spring Boot backend service.
-
----
-
-## Current Features (Phase 1)
-
-- Create a bank account
-- Deposit money
-- Withdraw money
-- Check account balance
-- Interactive menu using terminal
+A RESTful backend API built with Spring Boot that simulates core banking operations such as account creation, deposits, withdrawals, and transaction tracking.
 
 ---
 
-## Concepts Learned
+##  Features
 
-- Object-Oriented Programming (OOP)
-- Classes and Objects
-- Encapsulation
-- Constructors
-- Methods
-- Control Flow (`if`, `while`)
-- User Input (`Scanner`)
+* Create bank accounts
+* Deposit and withdraw funds
+* Track transaction history
+* Filter transactions by:
+
+  * Type (DEPOSIT / WITHDRAW)
+  * Date range
+* Pagination & sorting (latest first)
+* Global exception handling
+* Input validation
+* Structured API responses
 
 ---
 
-## Project Structure (Current)
+##  Tech Stack
+
+* Java
+* Spring Boot
+* Spring Data JPA
+* MySQL
+* Maven
 
 ---
 
-## How to Run (Console Version)
+##  API Endpoints
 
-### 1. Compile the project
-```bash
-javac *.java
+### ➤ Create Account
 
-- Output Example
-==== BANK MENU ====
-1. Deposit
-2. Withdraw
-3. Check Balance
-4. Exit
+POST `/bank/create`
+
+### ➤ Deposit
+
+POST `/bank/deposit?accNo=123&amount=500`
+
+### ➤ Withdraw
+
+POST `/bank/withdraw?accNo=123&amount=200`
+
+### ➤ Get Transactions
+
+GET `/bank/{accNo}/transactions`
+
+Query params:
+
+* type
+* start
+* end
+* page
+* size
+
+---
+
+##  Response Format
+
+```json
+{
+  "status": "success",
+  "message": "Transactions retrieved",
+  "data": [...]
+}
+```
+
+---
+
+##  Error Handling
+
+All errors follow a consistent structure:
+
+```json
+{
+  "status": "error",
+  "message": "Account not found",
+  "data": null
+}
+```
+
+---
+
+##  Sample Request(s)
+
+POST /bank/create
+
+{
+  "name": "John",
+  "balance": 1000
+}
+
+---
+
+##  Key Concepts Implemented
+
+* JPA Entity Relationships (`@OneToMany`, `@ManyToOne`)
+* DTO Mapping
+* Java Streams (filtering, sorting, pagination)
+* Global Exception Handling (`@ControllerAdvice`)
+* Validation (`@Valid`, `@NotBlank`, `@Positive`)
+
+---
+
+##  Future Improvements
+
+* Add authentication (Spring Security)
+* Add DTO layer fully
+* Move pagination to Spring Pageable
+* Add Swagger API documentation
+
+---
+
+##  Author
+
+John Macharia

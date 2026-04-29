@@ -29,5 +29,28 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
+# Maven / Build
+target/
+*.jar
+*.war
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
 .vscode/
+*.iml
+
+# Environment
+.env
+
+# Node (if ever used)
+node_modules/
+
+# Mac/Linux temp
+*.swp
