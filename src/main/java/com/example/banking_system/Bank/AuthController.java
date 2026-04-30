@@ -24,10 +24,10 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@RequestBody User user){
         User existing = userRepository.findByUsername(user.getUsername())
-        .orElseThrow(() -> new RuntimeException("User not found"));
+        .orElseThrow(()-> new ResourceNotFoundException("User not found"));
 
         if(!existing.getPassword().equals(user.getPassword())){
-            throw new RuntimeException("Invalid password");
+            throw new IllegalArgumentException("Invalid password");
         }
         return jwtUtil.generateToken(user.getUsername());
     }
