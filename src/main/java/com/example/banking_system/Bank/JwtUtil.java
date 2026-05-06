@@ -12,7 +12,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtUtil {
 
 private final Key SECRET = Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.HS256);
-
+    // Create a token
     public String generateToken(String username){
         return Jwts.builder()
         .setSubject(username)
@@ -21,7 +21,8 @@ private final Key SECRET = Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.
         .signWith(SECRET)
         .compact();
     }
-    public String extraUsername(String token){
+    // Read and verify a token
+    public String extractUsername(String token){
         return Jwts.parserBuilder()
         .setSigningKey(SECRET)
         .build()
