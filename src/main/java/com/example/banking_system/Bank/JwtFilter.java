@@ -34,10 +34,10 @@ throws ServletException, IOException{
 
     if(authHeader != null && authHeader.startsWith("Bearer ")){
         String token = authHeader.substring(7);
-    
+        System.out.println("Auth Header: "+ authHeader);
+
     try{
       String username = jwtUtil.extractUsername(token); 
-
       //The key part
       UsernamePasswordAuthenticationToken authentication = 
       new UsernamePasswordAuthenticationToken(
@@ -45,10 +45,13 @@ throws ServletException, IOException{
         null,
         Collections.emptyList()
       );
+    System.out.println("username: "+ username);
+
       authentication.setDetails(
         new WebAuthenticationDetailsSource().buildDetails(request)
 
     );
+    System.out.println("Authentication set");
     
     //Attach user to Spring Security context
     SecurityContextHolder.getContext().setAuthentication(authentication);

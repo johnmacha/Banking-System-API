@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 @Service
 public class BankService {
@@ -12,7 +14,18 @@ public class BankService {
 @Autowired
 private BankRepository bankRepository;
 
+@Autowired
+private UserRepository userRepository;
+
     public void createAccount(BankAccount acc){
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    String username = auth.getName();
+    // System.out.println(auth);
+    // System.out.println(auth.getName());
+    User user = userRepository.findByUsername(username)
+    .orElseThrow(()-> new ResourceNotFoundException("User not found"));
+
+        acc.setUser(user);
         bankRepository.save(acc);
     }
     public BankAccount getAccount(String accNo){

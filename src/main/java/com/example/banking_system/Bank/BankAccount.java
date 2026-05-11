@@ -5,13 +5,18 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 @Entity
 public class BankAccount {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String accNo;
     @NotBlank(message="Account name is required")
     private String name;
@@ -22,6 +27,10 @@ public class BankAccount {
     //Many transactions, one account 
     @OneToMany(mappedBy= "account", cascade = CascadeType.ALL, orphanRemoval = true) //Saving account saves transactions
     private List<Transaction> transactions = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
     public BankAccount(){} //Empty constructor for Spring + JPA input
     
@@ -37,12 +46,18 @@ public class BankAccount {
     public String getAccNo(){
         return accNo;
     }
+    public User getUser(){
+        return user;
+    }
     //Setters
     public void setAccNo(String accNo){
         this.accNo = accNo;
     }
     public void setName(String name){
         this.name = name;
+    }
+    public void setUser(User user){
+        this.user = user;
     }
 
     // Logic
