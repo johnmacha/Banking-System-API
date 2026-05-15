@@ -23,39 +23,39 @@ private UserRepository userRepository;
 
     acc.setAccNo(request.getAccountNumber());
     acc.setBalance(request.getInitialDeposit());
+    acc.setAccNo(request.getAccountNumber());
 
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    String username = auth.getName();
-
-    User user = userRepository.findByUsername(username)
-    .orElseThrow(()-> new ResourceNotFoundException("User not found"));
-
-    acc.setUser(user);
-    bankRepository.save(acc);
-    
-        // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     // String username = auth.getName();
-    // // System.out.println(auth);
-    // // System.out.println(auth.getName());
+    // System.out.println(username);
+
     // User user = userRepository.findByUsername(username)
     // .orElseThrow(()-> new ResourceNotFoundException("User not found"));
 
-    //     acc.setUser(user);
-    //     bankRepository.save(acc);
+    // if(!acc.getUser().getUsername().equals(username)){
+    //     throw new AccessDeniedException("Not your account");
+    // }
+
+    // acc.setUser(user);
+    bankRepository.save(acc);
+
     }
     public BankAccount getAccount(String accNo){
         return bankRepository.findById(accNo).orElse(null);
     }
     public String deposit(String accNo, double amount){
-        BankAccount acc = bankRepository.findById(accNo).orElse(null);
-
-        if(acc == null){
-            throw new ResourceNotFoundException("Account not Found!");
+            if(amount <= 0 ){
+            throw new InvalidAmountException("Deposit must be grater than 0");
         }
-        if(amount <= 0 ){
-            throw new ResourceNotFoundException("Invalid amount!");
-        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
 
+        BankAccount acc = bankRepository.findById(username)
+        .orElseThrow(()-> new ResourceNotFoundException("Account not found"));
+
+        if(!acc.getUser().getUsername().equals(username)){
+            throw new AccessDeniedException("Not your account");
+        }
         acc.deposit(amount);
         bankRepository.save(acc);
 

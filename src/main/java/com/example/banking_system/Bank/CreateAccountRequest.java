@@ -7,6 +7,8 @@ import jakarta.validation.constraints.PositiveOrZero;
 public class CreateAccountRequest {
 @NotBlank
 private String accountName;
+
+@NotBlank
 private String accountNumber;
 
 @NotNull
