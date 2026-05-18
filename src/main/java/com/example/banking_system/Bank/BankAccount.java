@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +18,11 @@ import jakarta.validation.constraints.Positive;
 public class BankAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
     private String accNo;
+
     @NotBlank(message="Account name is required")
     private String name;
 
@@ -49,6 +54,10 @@ public class BankAccount {
     public User getUser(){
         return user;
     }
+    public Long getId(){
+        return id;
+    }
+
     //Setters
     public void setAccNo(String accNo){
         this.accNo = accNo;
@@ -61,6 +70,9 @@ public class BankAccount {
     }
     public void setBalance(double balance){
         this.balance = balance;
+    }
+    public void setId(Long id){
+        this.id = id;
     }
 
     // Logic

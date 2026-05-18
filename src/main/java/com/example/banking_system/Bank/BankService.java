@@ -14,14 +14,13 @@ public class BankService {
 @Autowired
 private BankRepository bankRepository;
 
-@Autowired
-private UserRepository userRepository;
 // Allow service method to accept the DTO
     public void createAccount(CreateAccountRequest request){
     
     BankAccount acc = new BankAccount();
 
     acc.setAccNo(request.getAccountNumber());
+    acc.setName(request.getAccountName());
     acc.setBalance(request.getInitialDeposit());
     acc.setAccNo(request.getAccountNumber());
 
@@ -41,7 +40,7 @@ private UserRepository userRepository;
 
     }
     public BankAccount getAccount(String accNo){
-        return bankRepository.findById(accNo).orElse(null);
+        return bankRepository.findByAccNo(accNo).orElse(null);
     }
     public String deposit(String accNo, double amount){
             if(amount <= 0 ){
@@ -50,7 +49,7 @@ private UserRepository userRepository;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
-        BankAccount acc = bankRepository.findById(username)
+        BankAccount acc = bankRepository.findByAccNo(username)
         .orElseThrow(()-> new ResourceNotFoundException("Account not found"));
 
         if(!acc.getUser().getUsername().equals(username)){
@@ -62,7 +61,7 @@ private UserRepository userRepository;
         return "Deposit successful!";
     }
     public String withdraw(String accNo, double amount){
-        BankAccount acc = bankRepository.findById(accNo).orElse(null);
+        BankAccount acc = bankRepository.findByAccNo(accNo).orElse(null);
         if(acc == null){
             throw new ResourceNotFoundException("Account not Found!");
         }
@@ -84,7 +83,7 @@ private UserRepository userRepository;
         int page,
         int size
     ){
-        BankAccount acc = bankRepository.findById(accNo).orElse(null);
+        BankAccount acc = bankRepository.findByAccNo(accNo).orElse(null);
         if (acc == null){
             throw new ResourceNotFoundException("Account not found!");
         }
