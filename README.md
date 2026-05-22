@@ -20,16 +20,6 @@ A RESTful backend API built with Spring Boot that simulates core banking operati
 
 ---
 
-##  Tech Stack
-
-* Java
-* Spring Boot
-* Spring Data JPA
-* MySQL
-* Maven
-
----
-
 ##  API Endpoints
 
 ### ➤ Create Account
@@ -113,6 +103,62 @@ POST /bank/create
 * Add Swagger API documentation
 
 ---
+##  Recent Updates
+
+###  Account Creation Refactor
+- Implemented DTO-based request handling using `CreateAccountRequest`
+- Added validation with Jakarta Validation annotations
+- Improved separation between API requests and database entities
+
+###  Database & Entity Improvements
+- Refactored `BankAccount` entity structure
+- Separated internal database ID (`Long id`) from business account number (`String accNo`)
+- Added proper auto-generated primary keys using JPA/Hibernate
+- Added unique constraints for account numbers
+
+###  Persistence Layer Enhancements
+- Updated repository structure to use `JpaRepository<BankAccount, Long>`
+- Added custom repository method:
+  ```java
+  findByAccNo(String accNo)
+- Fixed Hibernate schema generation and table mapping issues
+
+### Validation & Error Handling
+## Added custom exceptions:
+- InvalidAmountException
+- ResourceNotFoundException
+## Implemented request validation for:
+- account names
+- balances
+- deposits
+- withdrawals
+
+### Security Improvements
+- Integrated Spring Security authentication context handling
+- Added ownership validation logic for secured account operations
+- Improved access control structure for protected endpoints
+
+### Transactions API
+- Added transaction filtering by:
+- transaction type
+- date range
+- Added pagination support
+- Added transaction sorting by latest activity
+
+### Tech Stack
+- Java
+- Spring Boot
+- Spring Security
+- Spring Data JPA
+- Hibernate
+- MySQL
+- Maven
+
+###  Current Progress
+- Account creation working successfully
+- Database persistence stable
+- Continuing work on authentication and secured banking operations
+- Expanding transaction management features
 
 ##  Author
 
