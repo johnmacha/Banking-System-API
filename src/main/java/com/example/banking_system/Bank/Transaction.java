@@ -22,7 +22,7 @@ private double amount;
 private LocalDateTime timestamp;
 
 @ManyToOne // Each transaction belongs to one account 
-@JoinColumn(name="account_name") // Marks the column  as a join column for an entity association or element collection
+@JoinColumn(name="account_id") // Marks the column  as a join column for an entity association or element collection
 @JsonIgnore
 private BankAccount account;
 
