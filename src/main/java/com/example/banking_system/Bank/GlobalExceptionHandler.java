@@ -1,5 +1,6 @@
 package com.example.banking_system.Bank;
 
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +34,17 @@ public Map<String, String> handleInvalidAmount(InvalidAmountException ex){
 public Map<String, String> handleResourceNotFound(ResourceNotFoundException ex){
     return Map.of("error", ex.getMessage());
 }
+
+@ExceptionHandler(DateTimeParseException.class)
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+Map<String, String>  handleDateTimeParseException(DateTimeParseException ex){
+
+return Map.of(
+    "error",
+    "Invalid date format. Use yyyy-MM-ddTHH:mm:ss"
+);
+}
+
 }
 // public ResponseEntity<APIResponse<Object>> handleValidation(MethodArgumentNotValidException ex){
    
