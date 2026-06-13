@@ -169,7 +169,7 @@ POST /bank/create
 
 ```bash
 git clone https://github.com/johnmacha/Banking-System-Api.git
-cd banking-system
+cd banking_system
 ```
 
 ### 2. Configure database
