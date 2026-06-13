@@ -1,42 +1,44 @@
 #  Banking System API
 
-A RESTful backend API built with Spring Boot that simulates core banking operations such as account creation, deposits, withdrawals, and transaction tracking.
+A Spring Boot REST API for a simple banking system with authentication, account management, deposits, withdrawals, and transaction tracking.
+
+This project demonstrates backend development skills including:
+- Spring Boot REST APIs
+- Spring Security (JWT authentication)
+- JPA/Hibernate ORM
+- MySQL database integration
+- Docker containerization
 
 ---
 
 ##  Features
 
-* Create bank accounts
-* Deposit and withdraw funds
-* Track transaction history
-* Filter transactions by:
-
-  * Type (DEPOSIT / WITHDRAW)
-  * Date range
-* Pagination & sorting (latest first)
-* Global exception handling
-* Input validation
-* Structured API responses
+- User authentication (JWT secured)
+- Create bank accounts
+- Deposit and withdraw funds
+- Transaction history tracking
+- Pagination and filtering of transactions
+- Global exception handling
+- Input validation
 
 ---
 
 ##  API Endpoints
 
-### ➤ Create Account
+### ➤ Auth
 
-POST `/bank/create`
+- POST `/auth/register`
+- POST `/auth/login`
 
-### ➤ Deposit
+### ➤ Bank Operations
 
-POST `/bank/deposit?accNo=123&amount=500`
+- POST /bank/create
+- POST /bank/deposit
+- POST /bank/withdraw
 
-### ➤ Withdraw
+### ➤ Transactions
 
-POST `/bank/withdraw?accNo=123&amount=200`
-
-### ➤ Get Transactions
-
-GET `/bank/{accNo}/transactions`
+- GET /bank/{accNo}/transactions
 
 Query params:
 
@@ -79,8 +81,9 @@ All errors follow a consistent structure:
 POST /bank/create
 
 {
-  "name": "John",
-  "balance": 1000
+    "accountNumber": "540",
+    "accountName":"Henry",
+    "initialDeposit": 5000
 }
 
 ---
@@ -90,17 +93,18 @@ POST /bank/create
 * JPA Entity Relationships (`@OneToMany`, `@ManyToOne`)
 * DTO Mapping
 * Java Streams (filtering, sorting, pagination)
-* Global Exception Handling (`@ControllerAdvice`)
-* Validation (`@Valid`, `@NotBlank`, `@Positive`)
+* Global Exception Handling   
+* Validation 
 
 ---
 
 ##  Future Improvements
 
-* Add authentication (Spring Security)
-* Add DTO layer fully
-* Move pagination to Spring Pageable
+* Add unit & integration tests
+* Add CI/CD pipeline
+* Improve security (refresh tokens, roles)
 * Add Swagger API documentation
+* Add Redis caching
 
 ---
 ##  Recent Updates
@@ -145,20 +149,78 @@ POST /bank/create
 - Added pagination support
 - Added transaction sorting by latest activity
 
+---
+
 ### Tech Stack
-- Java
+- Java 21
 - Spring Boot
-- Spring Security
+- Spring Security (JWT)
 - Spring Data JPA
 - Hibernate
-- MySQL
+- MySQL8
+- Docker & Docker Compose
 - Maven
 
-###  Current Progress
-- Account creation working successfully
-- Database persistence stable
-- Continuing work on authentication and secured banking operations
-- Expanding transaction management features
+---
+
+## Project Setup (Local Development)
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/johnmacha/Banking-System-Api.git
+cd banking-system
+```
+
+### 2. Configure database
+- Update application.properties :
+spring.datasource.url=jdbc:mysql://localhost:3306/Bank
+spring.datasource.username=root
+spring.datasource.password=my_password
+
+### 3. Run the application
+./mvnw spring-boot:run
+
+---
+## Running with Docker
+### 1. Build the application
+./mvnw.cmd clean package -DskipTests
+
+### 2. Start containers
+docker compose up --build
+- This will start:
+
+Spring Boot API → http://localhost:8080
+MySQL Database → port 3307 (host)
+
+### Docker Architecture
+Spring Boot (banking-api)
+        │
+        ▼
+MySQL (banking-mysql)
+
+-Communication inside Docker:
+jdbc:mysql://mysql:3306/Bank
+
+### Environment Variables (Docker)
+- Configured in docker-compose.yml :
+> SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/Bank
+> SPRING_DATASOURCE_USERNAME=root
+> SPRING_DATASOURCE_PASSWORD=my_password
+
+---
+
+## Docker Services
+### MySQL
+- Image: mysql:8.0
+- Port: 3307 (host) → 3306 (container)
+- Database: Bank
+
+### Banking API
+- Spring Boot container
+- Port: 8080
+
+---
 
 ##  Author
 

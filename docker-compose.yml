@@ -1,0 +1,27 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: banking-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: my_password
+      MYSQL_DATABASE: Bank
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  banking-api:
+    build: .
+    container_name: banking-api
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/Bank
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: my_password
+
+volumes:
+  mysql_data:
